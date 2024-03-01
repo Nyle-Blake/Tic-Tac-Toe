@@ -8,39 +8,54 @@ const winningCombinations = [
   ["1","5","9"],
   ["3","5","7"]
 ]
-const playGame = () => {
 
-  let playerX = []
-  let playerO = []
+const result = document.querySelector(".result")
+const gridItems = document.querySelectorAll(".grid-item")
 
-  const result = document.querySelector(".result")
-  const gridItems = document.querySelectorAll(".grid-item")
+let playerX = []
+let playerO = []
 
-  let tester = winningCombinations.some(combination => {
-    return combination.every(elem => playerX.includes(elem))
-  })
+// function for player to select square they want marked
+const getPlayerChoice = (item) => {
 
-  gridItems.forEach(item => {
-    item.addEventListener("click", () => {
-      if (item.textContent == "") {
-        item.textContent = "x"
-        playerX.push(item.id)
-        console.log(playerX)
-      }
-
-      let matches = winningCombinations.some(combination => {
-        return combination.every(elem => playerX.includes(elem))
-      })
-
-      if (matches == true) {
-        result.textContent = "You win!"
-      }
-
-      console.log(matches)
-    })
-  });
-
+  if (item.textContent == "") {
+    item.textContent = "x"
+    playerX.push(item.id)
+    console.log(playerX)
+  }
 
 }
 
-playGame()
+// function to get the computer to pick a square to mark
+const getComputerChoice = (item) => {
+  let computerChoice = ["1", "2", "3", "4", "5", "6", "7", "8", "9",][Math.floor(Math.random() * 9)]
+
+  console.log(item.value)   // Item value isnt getting logged
+  console.log(computerChoice)
+
+  if (item.value === computerChoice) {
+    item.textContent = "o"
+  }
+}
+
+// grid square event listener
+gridItems.forEach(item => {
+  item.addEventListener("click", () => {
+    getPlayerChoice(item)
+    getComputerChoice(item)
+    checkForWin()
+  })
+});
+
+// function to check wether a winning combination has been made
+const checkForWin = () => {
+
+  let matches = winningCombinations.some(combination => {
+    return combination.every(elem => playerX.includes(elem))
+  })
+
+  if (matches == true) {
+    result.textContent = "You win!"
+  }
+
+}
