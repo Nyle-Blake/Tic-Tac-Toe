@@ -12,6 +12,8 @@ const winningCombinations = [
 const result = document.querySelector(".result")
 const gridItems = document.querySelectorAll(".grid-item")
 
+let playerSymbol = "x"
+
 let playerX = []
 let playerO = []
 
@@ -27,22 +29,25 @@ const getPlayerChoice = (item) => {
 }
 
 // function to get the computer to pick a square to mark
-const getComputerChoice = (item) => {
+const getComputerChoice = () => {
   let computerChoice = ["1", "2", "3", "4", "5", "6", "7", "8", "9",][Math.floor(Math.random() * 9)]
 
-  console.log(item.value)   // Item value isnt getting logged
-  console.log(computerChoice)
+  let chosenSquare = document.getElementById(computerChoice)
 
-  if (item.value === computerChoice) {
-    item.textContent = "o"
+  if (chosenSquare.textContent == "") {
+    chosenSquare.textContent = "o"
+    playerO.push(computerChoice)
+  } else {
+    getComputerChoice()
   }
+
 }
 
 // grid square event listener
 gridItems.forEach(item => {
   item.addEventListener("click", () => {
     getPlayerChoice(item)
-    getComputerChoice(item)
+    getComputerChoice()
     checkForWin()
   })
 });
