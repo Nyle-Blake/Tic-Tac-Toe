@@ -27,3 +27,8 @@
   font-size: 120px;
   font-weight: bold;
 }
+
+button {
+  width: 200px;
+  font-size: 30px;
+}
