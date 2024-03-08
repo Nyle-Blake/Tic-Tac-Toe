@@ -43,9 +43,12 @@ const getPlayerChoice = (item) => {
 
 // function for the computer to pick a square to mark
 const getComputerChoice = () => {
+  
   let computerChoice = ["1", "2", "3", "4", "5", "6", "7", "8", "9",][Math.floor(Math.random() * 9)]
 
   let chosenSquare = document.getElementById(computerChoice)
+
+  console.log(chosenSquare.textContent)
 
   if (gameOver == true) {
     ;
@@ -63,12 +66,16 @@ const getComputerChoice = () => {
 
 }
 
-// click event listener to allow player to choose x and reset the grid
-symbolBtnX.addEventListener("click", () => {
-  playerSymbol = "x"
+const clearGrid = () => {
   gridItems.forEach(item => {
     item.textContent = ""
   })
+}
+
+// click event listener to allow player to choose x and reset the grid
+symbolBtnX.addEventListener("click", () => {
+  playerSymbol = "x"
+  clearGrid()
   playerXCount = []
   result.textContent = ""
   gameOver = false
@@ -78,13 +85,11 @@ symbolBtnX.addEventListener("click", () => {
 // click event listener to allow player to choose o and reset the grid
 symbolBtnO.addEventListener("click", () => {
   playerSymbol = "o"
-  getComputerChoice()
-  gridItems.forEach(item => {
-    item.textContent = ""
-  })
+  clearGrid()
   playerOCount = []
   result.textContent = ""
   gameOver = false
+  getComputerChoice()
   console.log(playerOCount)
 })
 
