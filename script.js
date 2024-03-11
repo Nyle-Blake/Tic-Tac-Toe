@@ -81,6 +81,10 @@ const getComputerChoice = () => {
 const clearGrid = () => {
   queries.gridItems.forEach(item => {
     item.textContent = ""
+    counts.playerXCount = []
+    counts.playerOCount = []
+    queries.result.textContent = ""
+    counts.gameOver = false
   })
 }
 
@@ -88,10 +92,6 @@ const clearGrid = () => {
 queries.symbolBtnX.addEventListener("click", () => {
   counts.playerSymbol = "x"
   clearGrid()
-  counts.playerXCount = []
-  counts.playerOCount = []
-  queries.result.textContent = ""
-  counts.gameOver = false
   console.log(counts.playerXCount)
 })
 
@@ -99,10 +99,6 @@ queries.symbolBtnX.addEventListener("click", () => {
 queries.symbolBtnO.addEventListener("click", () => {
   counts.playerSymbol = "o"
   clearGrid()
-  counts.playerOCount = []
-  counts.playerXCount = []
-  queries.result.textContent = ""
-  counts.gameOver = false
   getComputerChoice()
   console.log(counts.playerOCount)
 })
