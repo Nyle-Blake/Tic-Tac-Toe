@@ -1,59 +1,53 @@
-const winningCombinations = [
-  ["1","2","3"],
-  ["4","5","6"],
-  ["7","8","9"],
-  ["1","4","7"],
-  ["2","5","8"],
-  ["3","6","9"],
-  ["1","5","9"],
-  ["3","5","7"]
-]
+const queries = (() => {
+  const result = document.querySelector(".result")
+  const gridItems = document.querySelectorAll(".grid-item")
+  const symbolBtnX = document.querySelector(".choiceX")
+  const symbolBtnO = document.querySelector(".choiceO")
 
-const result = document.querySelector(".result")
-const gridItems = document.querySelectorAll(".grid-item")
-const symbolBtnX = document.querySelector(".choiceX")
-const symbolBtnO = document.querySelector(".choiceO")
+  return {result, gridItems, symbolBtnX, symbolBtnO}
+})();
 
+const counts = (() => {
+  let playerSymbol = ""
+  let playerXCount = []
+  let playerOCount = []
+  let gameOver = false
 
-let playerSymbol = ""
-
-let playerXCount = []
-let playerOCount = []
-
-let gameOver = false
+  return {playerSymbol, playerXCount, playerOCount, gameOver}
+})()
 
 // function for the player to pick a square to mark
 const getPlayerChoice = (item) => {
 
-  if (gameOver == true) {
+  if (counts.gameOver == true) {
     ;
   } else if (item.textContent == "") {
 
-    if (playerSymbol == "x") {
+    if (counts.playerSymbol == "x") {
       item.textContent = "x"
-      playerXCount.push(item.id)
+      counts.playerXCount.push(item.id)
 
       checkForWin()
 
-      if (gameOver !== true) {
+      if (counts.gameOver !== true) {
         getComputerChoice()
       }
 
       checkForWin()
-      console.log(playerXCount)
+      console.log(counts.playerXCount)
 
-    } else if (playerSymbol == "o") {
+    } else if (counts.playerSymbol == "o") {
       item.textContent = "o"
-      playerOCount.push(item.id)
+      counts.playerOCount.push(item.id)
 
       checkForWin()
       
-      if (gameOver !== true) {
+      if (counts.gameOver !== true) {
         getComputerChoice()
       }
 
       checkForWin()
-      console.log(playerOCount)
+      console.log(counts.playerOCount)
     }
   }
 
@@ -68,15 +62,15 @@ const getComputerChoice = () => {
 
   console.log(chosenSquare.textContent)
 
-  if (gameOver == true) {
+  if (counts.gameOver == true) {
     ;
   } else if (chosenSquare.textContent == "") {
-    if (playerSymbol == "x") {
+    if (counts.playerSymbol == "x") {
       chosenSquare.textContent = "o"
-      playerOCount.push(computerChoice)
-    } else if (playerSymbol == "o") {
+      counts.playerOCount.push(computerChoice)
+    } else if (counts.playerSymbol == "o") {
       chosenSquare.textContent = "x"
-      playerXCount.push(computerChoice)
+      counts.playerXCount.push(computerChoice)
     }
   } else {
     getComputerChoice()
@@ -85,38 +79,38 @@ const getComputerChoice = () => {
 }
 
 const clearGrid = () => {
-  gridItems.forEach(item => {
+  queries.gridItems.forEach(item => {
     item.textContent = ""
   })
 }
 
 // click event listener to allow player to choose x and reset the grid
-symbolBtnX.addEventListener("click", () => {
-  playerSymbol = "x"
+queries.symbolBtnX.addEventListener("click", () => {
+  counts.playerSymbol = "x"
   clearGrid()
-  playerXCount = []
-  playerOCount = []
-  result.textContent = ""
-  gameOver = false
-  console.log(playerXCount)
+  counts.playerXCount = []
+  counts.playerOCount = []
+  queries.result.textContent = ""
+  counts.gameOver = false
+  console.log(counts.playerXCount)
 })
 
 // click event listener to allow player to choose o and reset the grid
-symbolBtnO.addEventListener("click", () => {
-  playerSymbol = "o"
+queries.symbolBtnO.addEventListener("click", () => {
+  counts.playerSymbol = "o"
   clearGrid()
-  playerOCount = []
-  playerXCount = []
-  result.textContent = ""
-  gameOver = false
+  counts.playerOCount = []
+  counts.playerXCount = []
+  queries.result.textContent = ""
+  counts.gameOver = false
   getComputerChoice()
-  console.log(playerOCount)
+  console.log(counts.playerOCount)
 })
 
 // grid square click event listener
-gridItems.forEach(item => {
+queries.gridItems.forEach(item => {
   item.addEventListener("click", () => {
-    console.log(playerSymbol)
+    console.log(counts.playerSymbol)
     getPlayerChoice(item)
   })
 });
@@ -124,23 +118,34 @@ gridItems.forEach(item => {
 // function to check wether a winning combination has been made
 const checkForWin = () => {
 
+  const winningCombinations = [
+    ["1","2","3"],
+    ["4","5","6"],
+    ["7","8","9"],
+    ["1","4","7"],
+    ["2","5","8"],
+    ["3","6","9"],
+    ["1","5","9"],
+    ["3","5","7"]
+  ]
+
   let matchesX = winningCombinations.some(combination => {
-    return combination.every(elem => playerXCount.includes(elem))
+    return combination.every(elem => counts.playerXCount.includes(elem))
   })
 
   let matchesO = winningCombinations.some(combination => {
-    return combination.every(elem => playerOCount.includes(elem))
+    return combination.every(elem => counts.playerOCount.includes(elem))
   })
 
   if (matchesX == true) {
-    result.textContent = "X wins!"
-    gameOver = true;
+    queries.result.textContent = "X wins!"
+    counts.gameOver = true;
   } else if (matchesO == true) {
-    result.textContent = "O wins";
-    gameOver = true;
+    queries.result.textContent = "O wins";
+    counts.gameOver = true;
   } else {
 
-    let gridItemsArr = [...gridItems]
+    let gridItemsArr = [...queries.gridItems]
     console.log(gridItemsArr)
 
     let tieStatus = gridItemsArr.every(item => {
@@ -149,8 +154,8 @@ const checkForWin = () => {
 
     console.log(tieStatus)
 
-    if (tieStatus == true && gameOver == false) {
-      result.textContent = "It is a tie!"
+    if (tieStatus == true && counts.gameOver == false) {
+      queries.result.textContent = "It is a tie!"
     }
   }
 
